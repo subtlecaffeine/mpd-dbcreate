@@ -83,6 +83,7 @@ static std::string music_directory;
 static AllocatedPath database_path = nullptr;
 static bool verbose = false;
 static bool update_mode = false;
+static std::string update_path;
 
 // Global instance pointer required by other MPD components  
 // This must be defined here as we're not linking with Main.cxx
@@ -93,12 +94,13 @@ extern "C" __attribute__((visibility("default"))) ChannelMode GetChannelMode() n
 }
 
 static void PrintUsage() {
-	std::cout << "mpd-dbcreate | Jay's MPD DB Creator - Hot Diggity Daffodil!\n"
+	std::cout << "mpd-dbcreate | Jay's MPD DB Creator - Cheese It!\n"
 		  << "Usage: mpd-dbcreate --music-dir /path/to/scan --database /path/to/mpd.db [options]\n\n"
 		  << "Options:\n"
 		  << "  --music-dir <path>   Music directory\n"
 		  << "  --database <path>    Database file\n"
 		  << "  --update             Update existing database (incremental scan)\n"
+		  << "  --update-path <path> Update only specified subdirectory (use with --update)\n"
 		  << "  --stereo             Stereo only\n"
 		  << "  --multichannel       Multichannel only\n"
 		  << "  --all                All (default)\n"
@@ -114,6 +116,10 @@ static void ParseArgs(int argc, char *argv[]) {
 			exit(0);
 		} else if (arg == "--update") {
 			update_mode = true;
+		} else if (arg == "--update-path") {
+			if (++i >= argc)
+				throw std::runtime_error("--update-path needs arg");
+			update_path = argv[i];
 		} else if (arg == "--stereo") {
 			channel_mode = ChannelMode::STEREO;
 		} else if (arg == "--multichannel") {
@@ -136,6 +142,8 @@ static void ParseArgs(int argc, char *argv[]) {
 	}
 	if (music_directory.empty() || database_path.IsNull())
 		throw std::runtime_error("--music-dir and --database required");
+	if (!update_path.empty() && !update_mode)
+		throw std::runtime_error("--update-path requires --update");
 }
 
 int main(int argc, char *argv[]) {
@@ -210,6 +218,9 @@ int main(int argc, char *argv[]) {
 			std::cerr << "Music directory: " << music_directory << "\n";
 			std::cerr << "Database path: " << database_path.ToUTF8() << "\n";
 			std::cerr << "Mode: " << (update_mode ? "UPDATE (incremental)" : "CREATE (full scan)") << "\n";
+			if (!update_path.empty()) {
+				std::cerr << "Update path: " << update_path << "\n";
+			}
 			std::cerr << "Channel Mode: ";
 			if (channel_mode == ChannelMode::STEREO) {
 				std::cerr << "STEREO (filtering out multichannel)\n";
@@ -219,6 +230,9 @@ int main(int argc, char *argv[]) {
 				std::cerr << "ALL (no filtering)\n";
 			}
 			std::cerr << (update_mode ? "Updating" : "Scanning");
+			if (!update_path.empty()) {
+				std::cerr << " path: " << update_path;
+			}
 			std::cerr.flush();
 		}
 		
@@ -231,7 +245,9 @@ int main(int argc, char *argv[]) {
 		
 		// Start scan - use 'false' for discard parameter when in update mode
 		// to perform incremental update, 'true' for full rescan
-		instance.update->Enqueue("", !update_mode);
+		// If update_path is specified, update only that subdirectory
+		const std::string &scan_path = update_path.empty() ? "" : update_path;
+		instance.update->Enqueue(scan_path, !update_mode);
 		
 		// Create update checker to monitor completion
 		UpdateChecker checker(instance, verbose);

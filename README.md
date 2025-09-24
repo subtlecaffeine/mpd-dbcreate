@@ -1,4 +1,4 @@
-# mpd-dbcreate | Jay's MPD Database Creator - "I'm 40% Dolomite!"
+# mpd-dbcreate | Jay's MPD Database Creator - "Cheese It!"
 
 It's mpd without the daemon and playback functionality. Creates an mpd database based on "better" rules regarding CUE sheets, multi-channel files, and SACD content.
 
@@ -11,6 +11,7 @@ mpd-dbcreate is a command-line tool that creates MPD-compatible database files w
 - Building databases on systems where MPD isn't installed - *Run it directly on the RAID...just symlink or awk your paths*
 - Filtering collections by channel configuration (stereo/multichannel) - *Even that niche format.*
 - Supports updating an existing database. - *But only with this utility and not from within mpd.*
+- Supports partial update based on path. - *Because the original did it!*
 - Slightly smaller than the mpd binary! - *We at Monolithic Binary love you; as much as you love us.*
 
 
@@ -90,14 +91,16 @@ There is no installation. mpd-dbcreate is a static binary. You may put it in you
 mpd-dbcreate --music-dir <path> --database <path> [options]
 
 Options:
-  --update             Updates an existing database.
-  --music-dir <path>   Music directory to scan (required)
-  --database <path>    Output database file path (required)
-  --stereo             Include only stereo files
-  --multichannel       Include only multichannel files  
-  --all                Include all files (default)
-  --verbose            Output messages to console
-  --help               Show help message
+  --music-dir <path>   Music directory
+  --database <path>    Database file
+  --update             Update existing database (incremental scan)
+  --update-path <path> Update only specified subdirectory (use with --update)
+  --stereo             Stereo only
+  --multichannel       Multichannel only
+  --all                All (default)
+  --verbose            Verbose output
+  --help               Show help
+
 ```
 
 I have found it's best to feed full paths for everything. It should be obvious if it doesn't like your music-dir argument. Not liking --database argument has shown up as a simple database plugin error.
@@ -124,12 +127,18 @@ Update an existing database:
 ```bash
 mpd-dbcreate --music-dir /path/to/media --database /path/to/file.db (--stereo|--multichannel|--all) --update
 ```
+Update a specific directory in the database:
+
+```bash
+mpd-dbcreate --music-dir /path/to/media --database /path/to/file.db (--stereo|--multichannel|--all) --update --update-path /path
+```
 
 ## Changes
 ```
 28-AUG-2025 - Initial hacking of database tool from mpd-sacd itself. Multichannel, CUE, SACD logic updates.
 29-AUG-2025 - Removed systemd, output, and daemonization features where possible. Restored verbose output from systemd hijack. Got --update working.
 01-SEP-2025 - After being able to actually test DVD-Audio; modified DVD-Audio plugin to match SACD behavior for track and channel filtering.
+24-SEP-2025 - Added --update-path option to update just a specific path in the database and waiting 3 weeks to getting around to testing it.
 ```
 
 ## License
