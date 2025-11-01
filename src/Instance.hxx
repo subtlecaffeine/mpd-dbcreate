@@ -37,7 +37,6 @@ class InotifyUpdate;
 #include <memory>
 #include <list>
 
-class ClientList;
 struct Partition;
 class AudioOutputControl;
 class StateFile;
@@ -120,8 +119,6 @@ struct Instance final
 #ifdef ENABLE_CURL
 	std::unique_ptr<RemoteTagCache> remote_tag_cache;
 #endif
-
-	std::unique_ptr<ClientList> client_list;
 
 	std::list<Partition> partitions;
 

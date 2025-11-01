@@ -28,7 +28,7 @@
 
 #include "Match.hxx"
 #include "lib/sqlite/Database.hxx"
-#include "protocol/RangeArg.hxx"
+#include "RangeArg.hxx"
 
 #include <sqlite3.h>
 

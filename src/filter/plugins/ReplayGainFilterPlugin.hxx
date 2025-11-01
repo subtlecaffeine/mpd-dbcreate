@@ -1,49 +1,47 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // Copyright The Music Player Daemon Project
+// STUB FILE - Filter support removed for mpd-dbcreate
 
 #ifndef MPD_REPLAY_GAIN_FILTER_PLUGIN_HXX
 #define MPD_REPLAY_GAIN_FILTER_PLUGIN_HXX
 
-#include "ReplayGainMode.hxx"
-
+#include "filter/Prepared.hxx"
 #include <memory>
+#include <cstdint>
 
-class Filter;
-class PreparedFilter;
-class Mixer;
 struct ReplayGainConfig;
-struct ReplayGainInfo;
+enum class ReplayGainMode : uint8_t;
 
 /**
- * @param allow_convert allow the class to convert to a different
- * #SampleFormat to preserve quality?
+ * Stub implementation - filter support not needed for database creation
  */
-std::unique_ptr<PreparedFilter>
-NewReplayGainFilter(const ReplayGainConfig &config,
-		    bool allow_convert) noexcept;
+inline std::unique_ptr<PreparedFilter>
+NewReplayGainFilter([[maybe_unused]] const ReplayGainConfig &config,
+		    [[maybe_unused]] bool allow_convert = false)
+{
+	return nullptr;
+}
 
-/**
- * Enables or disables the hardware mixer for applying replay gain.
- *
- * @param mixer the hardware mixer, or nullptr to fall back to software
- * volume
- * @param base the base volume level for scale=1.0, between 1 and 100
- * (including).
- */
-void
-replay_gain_filter_set_mixer(PreparedFilter &_filter, Mixer *mixer,
-			     unsigned base);
+inline void
+replay_gain_filter_set_mode([[maybe_unused]] Filter &,
+			    [[maybe_unused]] ReplayGainMode) noexcept
+{
+	// No-op stub
+}
 
-/**
- * Sets a new #ReplayGainInfo at the beginning of a new song.
- *
- * @param info the new #ReplayGainInfo value, or nullptr if no replay
- * gain data is available for the current song
- */
-void
-replay_gain_filter_set_info(Filter &filter, const ReplayGainInfo *info);
+inline void
+replay_gain_filter_set_info([[maybe_unused]] Filter &,
+			    [[maybe_unused]] const void *) noexcept
+{
+	// No-op stub
+}
 
-void
-replay_gain_filter_set_mode(Filter &filter, ReplayGainMode mode);
+inline void
+replay_gain_filter_set_mixer([[maybe_unused]] PreparedFilter &,
+			     [[maybe_unused]] class Mixer *,
+			     [[maybe_unused]] unsigned) noexcept
+{
+	// No-op stub
+}
 
 #endif

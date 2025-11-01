@@ -1,28 +1,25 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // Copyright The Music Player Daemon Project
+// STUB FILE - Filter support removed for mpd-dbcreate
 
-#ifndef MPD_PREPARED_FILTER_HXX
-#define MPD_PREPARED_FILTER_HXX
+#ifndef MPD_FILTER_PREPARED_HXX
+#define MPD_FILTER_PREPARED_HXX
 
+#include "Filter.hxx"
 #include <memory>
 
 struct AudioFormat;
-class Filter;
 
+/**
+ * Stub implementation - filter support not needed for database creation
+ */
 class PreparedFilter {
 public:
 	virtual ~PreparedFilter() = default;
 
-	/**
-	 * Opens the filter, preparing it for FilterPCM().
-	 *
-	 * Throws on error.
-	 *
-	 * @param af the audio format of incoming data; the
-	 * plugin may modify the object to enforce another input
-	 * format
-	 */
-	virtual std::unique_ptr<Filter> Open(AudioFormat &af) = 0;
+	virtual std::unique_ptr<Filter> Open([[maybe_unused]] const AudioFormat &af) {
+		return nullptr; // Stub returns nullptr
+	}
 };
 
 #endif

@@ -11,7 +11,7 @@ output_api = static_library(
 output_api_dep = declare_dependency(
   link_with: output_api,
   dependencies: [
-    filter_plugins_dep,
+    # filter_plugins_dep,  # Removed - not needed for database creation
     mixer_plugins_dep,
   ],
 )
@@ -45,8 +45,6 @@ output_glue = static_library(
   'Domain.cxx',
   'Control.cxx',
   'State.cxx',
-  'Print.cxx',
-  'OutputCommand.cxx',
   'Init.cxx',
   include_directories: inc,
   dependencies: [
@@ -58,7 +56,7 @@ output_glue = static_library(
 output_glue_dep = declare_dependency(
   link_with: output_glue,
   dependencies: [
-    filter_glue_dep,
+    # filter_glue_dep,  # Removed - not needed for database creation
     mixer_plugins_dep,
   ],
 )

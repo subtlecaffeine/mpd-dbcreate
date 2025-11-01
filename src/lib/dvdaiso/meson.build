@@ -23,4 +23,7 @@ dvdaiso = static_library(
 
 dvdaiso_dep = declare_dependency(
   link_with: dvdaiso,
+  dependencies: [
+    crypto_md5_dep,
+  ],
 )

@@ -1,7 +1,7 @@
 project(
   'mpd-dbcreate',
   ['c', 'cpp'],
-  version: '0.1',
+  version: 'Shut Up Baby, I Know It!',
   meson_version: '>= 1.2',
   default_options: [
     'c_std=c11',
@@ -9,7 +9,11 @@ project(
     'cpp_std=c++23',
     'build.cpp_std=c++23',
     'warning_level=3',
-
+    'buildtype=minsize',
+    'b_ndebug=true',
+    'b_lto=true',
+    'debug=false',
+    'strip=true',
     'fmt:cpp_std=c++23',
 
     # If we build those libraries as Meson subproject, they shall be
@@ -22,8 +26,6 @@ project(
     'gtest:default_library=static',
     'id3tag:default_library=static',
     'lame:default_library=static',
-    'libmicrohttpd:default_library=static',
-    'libmpdclient:default_library=static',
     'libnpupnp:default_library=static',
     'libsndfile:default_library=static',
     'liburing:default_library=static',
@@ -89,8 +91,6 @@ project(
     'curl:tftp=disabled',
     'lame:decoder=false',
     'lame:tools=disabled',
-    'libmpdclient:documentation=false',
-    'libmpdclient:test=false',
     'libsndfile:examples=false',
     'libsndfile:external_libs=disabled',
     'libsndfile:mpeg=disabled',
@@ -114,6 +114,9 @@ if compiler.get_id() == 'gcc' and compiler.version().version_compare('<12')
   warning('Your GCC version is too old.  You need at least version 12.')
 elif compiler.get_id() == 'clang' and compiler.version().version_compare('<14')
   warning('Your clang version is too old.  You need at least version 14.')
+endif
+if get_option('b_lto')
+  add_project_link_arguments('-Wno-odr', language: 'cpp')
 endif
 
 version_conf = configuration_data()
@@ -350,22 +353,6 @@ log_dep = declare_dependency(
 sources = [
   version_cxx,
   'src/Main.cxx',
-  'src/protocol/ArgParser.cxx',
-  'src/protocol/IdleFlags.cxx',
-  'src/command/CommandError.cxx',
-  'src/command/PositionArg.cxx',
-  'src/command/AllCommands.cxx',
-  'src/command/QueueCommands.cxx',
-  'src/command/TagCommands.cxx',
-  'src/command/PlayerCommands.cxx',
-  'src/command/PlaylistCommands.cxx',
-  'src/command/FileCommands.cxx',
-  'src/command/OutputCommands.cxx',
-  'src/command/MessageCommands.cxx',
-  'src/command/ClientCommands.cxx',
-  'src/command/PartitionCommands.cxx',
-  'src/command/OtherCommands.cxx',
-  'src/command/CommandListBuilder.cxx',
   'src/config/PartitionConfig.cxx',
   'src/config/PlayerConfig.cxx',
   'src/config/ReplayGainConfig.cxx',
@@ -373,28 +360,7 @@ sources = [
   'src/decoder/Thread.cxx',
   'src/decoder/Control.cxx',
   'src/decoder/Bridge.cxx',
-  'src/decoder/DecoderPrint.cxx',
-  'src/client/Listener.cxx',
-  'src/client/Client.cxx',
-  'src/client/Config.cxx',
-  'src/client/Domain.cxx',
-  'src/client/Event.cxx',
-  'src/client/Expire.cxx',
-  'src/client/Idle.cxx',
-  'src/client/List.cxx',
-  'src/client/New.cxx',
-  'src/client/Process.cxx',
-  'src/client/Read.cxx',
-  'src/client/Write.cxx',
-  'src/client/Message.cxx',
-  'src/client/Subscribe.cxx',
-  'src/client/File.cxx',
-  'src/client/Response.cxx',
-  'src/client/ThreadBackgroundCommand.cxx',
-  'src/client/ProtocolFeature.cxx',
-  'src/Listen.cxx',
   'src/LogInit.cxx',
-  'src/ls.cxx',
   'src/Instance.cxx',
   'src/MusicBuffer.cxx',
   'src/MusicPipe.cxx',
@@ -407,18 +373,8 @@ sources = [
   'src/player/Thread.cxx',
   'src/player/Control.cxx',
   'src/PlaylistError.cxx',
-  'src/PlaylistPrint.cxx',
-  'src/PlaylistSave.cxx',
-  'src/playlist/Length.cxx',
-  'src/playlist/PlaylistStream.cxx',
-  'src/playlist/PlaylistMapper.cxx',
-  'src/playlist/PlaylistAny.cxx',
-  'src/playlist/PlaylistSong.cxx',
-  'src/playlist/PlaylistQueue.cxx',
-  'src/playlist/Print.cxx',
   'src/db/PlaylistVector.cxx',
   'src/queue/Queue.cxx',
-  'src/queue/Print.cxx',
   'src/queue/Save.cxx',
   'src/queue/Selection.cxx',
   'src/queue/Playlist.cxx',
@@ -426,22 +382,16 @@ sources = [
   'src/queue/PlaylistEdit.cxx',
   'src/queue/PlaylistTag.cxx',
   'src/queue/PlaylistState.cxx',
-  'src/LocateUri.cxx',
   'src/SongUpdate.cxx',
-  'src/SongLoader.cxx',
-  'src/SongPrint.cxx',
   'src/SongSave.cxx',
   'src/StateFile.cxx',
   'src/StateFileConfig.cxx',
-  'src/Stats.cxx',
-  'src/TagPrint.cxx',
   'src/TagSave.cxx',
   'src/TagFile.cxx',
   'src/TagStream.cxx',
-  'src/TagAny.cxx',
-  'src/TimePrint.cxx',
   'src/mixer/Memento.cxx',
-  'src/PlaylistFile.cxx',
+  'src/StatsStub.cxx',
+  'src/StubFunctions.cxx',
 ]
 
 if is_windows
@@ -452,7 +402,6 @@ endif
 
 # Android support removed - always use non-Android sources
 sources += [
-  'src/CommandLine.cxx',
   'src/unix/SignalHandlers.cxx',
 ]
 
@@ -464,8 +413,6 @@ if enable_database
   sources += [
     'src/storage/StorageState.cxx',
     'src/queue/PlaylistUpdate.cxx',
-    'src/command/StorageCommands.cxx',
-    'src/command/DatabaseCommands.cxx',
   ]
 endif
 
@@ -496,7 +443,8 @@ subdir('src/lib/zlib')
 
 # subdir('src/lib/alsa')  # Disabled - not needed for database creation
 alsa_dep = declare_dependency()  # Empty dependency for compatibility
-subdir('src/lib/chromaprint')
+# subdir('src/lib/chromaprint')  # Disabled - not needed for database creation
+chromaprint_dep = declare_dependency()  # Empty dependency for compatibility
 subdir('src/lib/curl')
 subdir('src/lib/expat')
 subdir('src/lib/ffmpeg')
@@ -524,12 +472,13 @@ subdir('src/tag')
 subdir('src/neighbor')
 subdir('src/input')
 subdir('src/archive')
-subdir('src/filter')
+subdir('src/filter')  # Stub implementations for compatibility
 subdir('src/mixer')
 subdir('src/output')
 subdir('src/lib/xiph')
 subdir('src/decoder')
-subdir('src/encoder')
+# subdir('src/encoder')  # Removed - not needed for database creation
+encoder_glue_dep = declare_dependency()  # Empty dependency for compatibility
 subdir('src/song')
 subdir('src/playlist')
 
@@ -547,20 +496,11 @@ endif
 
 if sqlite_dep.found()
   sources += [
-    'src/command/StickerCommands.cxx',
     'src/sticker/Database.cxx',
-    'src/sticker/Print.cxx',
     'src/sticker/SongSticker.cxx',
     'src/sticker/TagSticker.cxx',
     'src/sticker/AllowedTags.cxx',
     'src/sticker/CleanupService.cxx',
-  ]
-endif
-
-if chromaprint_dep.found()
-  sources += [
-    'src/command/FingerprintCommands.cxx',
-    'src/lib/chromaprint/DecoderClient.cxx',
   ]
 endif
 
@@ -583,9 +523,6 @@ else
 endif
 subdir('src/db')
 
-if neighbor_glue_dep.found()
-  sources += 'src/command/NeighborCommands.cxx'
-endif
 
 if archive_glue_dep.found()
   sources += [
@@ -605,7 +542,7 @@ link_args = []
 more_deps = []
 # Android support removed - always use executable type
 target_type = 'executable'
-target_name = 'mpd'
+target_name = 'mpd-dbcreate'
 install_dir = get_option('bindir')
 
 if enable_sacdiso
@@ -627,29 +564,23 @@ endif
 configure_file(output: 'config.h', configuration: conf)
 
 # MPD Database Creator utility
-# Build a new source list without Main.cxx
-# Start with the custom sources and version_cxx
+# Build source list with our Main.cxx and additional update sources
 db_creator_sources = [
   version_cxx,
-  'src/DbMain.cxx',
+  'src/Main.cxx',
   'src/db/update/FilteredSongUpdate.cxx',
   'src/db/update/CueValidator.cxx',
 ]
 
-# Add all source files from the main sources list except Main.cxx and version_cxx
-# Since version_cxx is at index 0, we skip it using index tracking
+# Add all source files from the main sources list except the old sources[0] version_cxx
+# and sources[1] which was the old Main.cxx placeholder
 source_index = 0
 foreach src : sources
-  if source_index == 0
+  if source_index <= 1
+    # Skip version_cxx and the old Main.cxx entry
     source_index += 1
   else
-    # For all other elements, only check against Main.cxx
-    # This avoids comparing CustomTarget with string
-    if src == 'src/Main.cxx'
-      # Skip Main.cxx
-    else
-      db_creator_sources += src
-    endif
+    db_creator_sources += src
     source_index += 1
   endif
 endforeach
@@ -676,10 +607,9 @@ mpd_dbcreate = executable(
     song_dep,
     # so log systemd!
     sqlite_dep,
-    chromaprint_dep,
     neighbor_glue_dep,
     output_glue_dep,
-    encoder_glue_dep,
+    # encoder_glue_dep,  # Removed - not needed for database creation
     mixer_glue_dep,
     more_deps,
     fmt_dep,
@@ -698,7 +628,7 @@ install_data(
 )
 
 install_data(
-  'AUTHORS', 'COPYING', 'NEWS', 'README.md',
+  'AUTHORS', 'COPYING', 'README.md',
   install_dir: join_paths(get_option('datadir'), 'doc', meson.project_name()),
 )
 

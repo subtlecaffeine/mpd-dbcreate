@@ -21,7 +21,6 @@ endif
 subdir('plugins')
 
 db_glue_sources = [
-  'Count.cxx',
   'update/UpdateDomain.cxx',
   'update/Config.cxx',
   'update/Service.cxx',
@@ -41,9 +40,7 @@ db_glue_sources = [
   'DatabaseGlue.cxx',
   'Configured.cxx',
   'DatabaseSong.cxx',
-  'DatabasePrint.cxx',
   'DatabaseQueue.cxx',
-  'DatabasePlaylist.cxx',
 ]
 
 if enable_inotify

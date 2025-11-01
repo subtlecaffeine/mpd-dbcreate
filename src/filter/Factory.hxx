@@ -1,22 +1,18 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // Copyright The Music Player Daemon Project
+// STUB FILE - Filter support removed for mpd-dbcreate
 
 #ifndef MPD_FILTER_FACTORY_HXX
 #define MPD_FILTER_FACTORY_HXX
 
-#include <memory>
-
 struct ConfigData;
-class PreparedFilter;
 
+/**
+ * Stub implementation - filter support not needed for database creation
+ */
 class FilterFactory {
-	const ConfigData &config;
-
 public:
-	explicit FilterFactory(const ConfigData &_config) noexcept
-		:config(_config) {}
-
-	std::unique_ptr<PreparedFilter> MakeFilter(const char *name);
+	FilterFactory([[maybe_unused]] const ConfigData &config) {}
 };
 
 #endif

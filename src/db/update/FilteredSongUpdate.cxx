@@ -7,18 +7,7 @@
 #include "db/plugins/simple/Song.hxx"
 #include "pcm/AudioFormat.hxx"
 
-// External function to get the channel mode
-enum class ChannelMode {
-	STEREO,
-	MULTICHANNEL,
-	ALL
-};
-
-// Weak symbol allows override in DbMain
-extern "C" __attribute__((weak)) ChannelMode GetChannelMode() noexcept {
-	// Default to ALL mode (no filtering) for normal MPD
-	return ChannelMode::ALL;
-}
+#include "ChannelMode.hxx"
 
 
 static bool

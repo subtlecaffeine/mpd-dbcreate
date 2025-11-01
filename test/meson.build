@@ -303,33 +303,7 @@ run_input = executable(
   ],
 )
 
-if curl_dep.found()
-  executable(
-    'RunCurl',
-    'RunCurl.cxx',
-    'ShutdownHandler.cxx',
-    include_directories: inc,
-    dependencies: [
-      curl_dep,
-      event_dep,
-    ],
-  )
-
-  test(
-    'test_icy_parser',
-    executable(
-      'test_icy_parser',
-      'test_icy_parser.cxx',
-      include_directories: inc,
-      dependencies: [
-        icu_dep,
-        tag_dep,
-        gtest_dep,
-      ],
-    ),
-    protocol: 'gtest',
-  )
-endif
+# CURL tests removed - streaming support not needed for database creation
 
 #
 # Archive
@@ -399,21 +373,7 @@ executable(
 # Tag
 #
 
-if chromaprint_dep.found()
-  executable(
-    'RunChromaprint',
-    'RunChromaprint.cxx',
-    '../src/lib/chromaprint/DecoderClient.cxx',
-    include_directories: inc,
-    dependencies: [
-      decoder_glue_dep,
-      input_glue_dep,
-      archive_glue_dep,
-      chromaprint_dep,
-      cmdline_dep,
-    ],
-  )
-endif
+# ChromaPrint support removed - not needed for database creation
 
 #
 # Decoder
@@ -522,16 +482,17 @@ test(
   protocol: 'gtest',
 )
 
-executable(
-  'run_filter',
-  'run_filter.cxx',
-  'ReadFrames.cxx',
-  include_directories: inc,
-  dependencies: [
-    filter_glue_dep,
-    cmdline_dep,
-  ],
-)
+# Removed - filter plugins not needed for database creation
+# executable(
+#   'run_filter',
+#   'run_filter.cxx',
+#   'ReadFrames.cxx',
+#   include_directories: inc,
+#   dependencies: [
+#     filter_glue_dep,
+#     cmdline_dep,
+#   ],
+# )
 
 executable(
   'software_volume',
@@ -586,28 +547,28 @@ executable(
 )
 
 #
-# Encoder
+# Encoder - Removed, not needed for database creation
 #
 
-if need_encoder
-  executable(
-    'run_encoder',
-    'run_encoder.cxx',
-    include_directories: inc,
-    dependencies: [
-      encoder_glue_dep,
-    ],
-  )
-
-  executable(
-    'test_vorbis_encoder',
-    'test_vorbis_encoder.cxx',
-    include_directories: inc,
-    dependencies: [
-      encoder_glue_dep,
-    ],
-  )
-endif
+# if need_encoder
+#   executable(
+#     'run_encoder',
+#     'run_encoder.cxx',
+#     include_directories: inc,
+#     dependencies: [
+#       encoder_glue_dep,
+#     ],
+#   )
+#
+#   executable(
+#     'test_vorbis_encoder',
+#     'test_vorbis_encoder.cxx',
+#     include_directories: inc,
+#     dependencies: [
+#       encoder_glue_dep,
+#     ],
+#   )
+# endif
   
 #
 # Output
@@ -619,7 +580,7 @@ executable(
   include_directories: inc,
   dependencies: [
     output_registry_dep,
-    encoder_glue_dep,
+    # encoder_glue_dep,  # Removed - not needed for database creation
     event_dep,
     cmdline_dep,
   ],

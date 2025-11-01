@@ -5,7 +5,7 @@
 #define MPD_SONG_STICKER_HXX
 
 #include "Match.hxx"
-#include "protocol/RangeArg.hxx"
+#include "RangeArg.hxx"
 
 #include <string>
 

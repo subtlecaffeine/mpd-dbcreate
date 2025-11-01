@@ -23,11 +23,9 @@ if upnp_dep.found()
   ]
 endif
 
-libmpdclient_dep = dependency('libmpdclient', version: '>= 2.15', required: get_option('libmpdclient'))
-conf.set('ENABLE_LIBMPDCLIENT', libmpdclient_dep.found())
-if libmpdclient_dep.found()
-  db_plugins_sources += 'ProxyDatabasePlugin.cxx'
-endif
+# libmpdclient support removed - not needed for database creation
+libmpdclient_dep = dependency('', required: false)
+conf.set('ENABLE_LIBMPDCLIENT', false)
 
 db_plugins = static_library(
   'db_plugins',

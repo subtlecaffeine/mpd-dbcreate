@@ -197,15 +197,7 @@ finish() noexcept {
 	my_av_log_set_default_callback();
 }
 
-// External function to get channel mode for database creation
-enum class ChannelMode {
-	STEREO,
-	MULTICHANNEL,
-	ALL
-};
-extern "C" __attribute__((weak)) ChannelMode GetChannelMode() noexcept {
-	return ChannelMode::ALL; // Default for normal MPD
-}
+#include "ChannelMode.hxx"
 
 static std::forward_list<DetachedSong>
 container_scan(Path path_fs) {

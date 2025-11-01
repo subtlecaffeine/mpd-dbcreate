@@ -10,7 +10,7 @@
 #include "song/DetachedSong.hxx"
 #include "SongLoader.hxx"
 #include "Mapper.hxx"
-#include "protocol/RangeArg.hxx"
+#include "RangeArg.hxx"
 #include "io/FileLineReader.hxx"
 #include "io/FileOutputStream.hxx"
 #include "io/BufferedOutputStream.hxx"

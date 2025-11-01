@@ -11,7 +11,7 @@
 #include "mixer/Memento.hxx"
 #include "player/Control.hxx"
 #include "player/Listener.hxx"
-#include "protocol/RangeArg.hxx"
+#include "RangeArg.hxx"
 #include "db/Features.hxx" // for ENABLE_DATABASE
 #include "util/IntrusiveList.hxx"
 #include "ReplayGainMode.hxx"
@@ -27,9 +27,6 @@ struct Instance;
 struct RangeArg;
 class MultipleOutputs;
 class SongLoader;
-class ClientListener;
-class Client;
-struct ClientPerPartitionListHook;
 
 /**
  * A partition of the Music Player Daemon.  It is a separate unit with
@@ -45,10 +42,6 @@ struct Partition final : QueueListener, PlayerListener, MixerListener {
 	const std::string name;
 
 	const PartitionConfig &config;
-
-	std::unique_ptr<ClientListener> listener;
-
-	IntrusiveList<Client, ClientPerPartitionListHook> clients;
 
 	/**
 	 * Monitor for idle events local to this partition.

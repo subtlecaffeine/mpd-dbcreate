@@ -4,61 +4,30 @@
 #include "Registry.hxx"
 #include "InputPlugin.hxx"
 #include "input/Features.h"
-#include "plugins/QobuzInputPlugin.hxx"
 #include "config.h"
 
-#ifdef ENABLE_ALSA
-#include "plugins/AlsaInputPlugin.hxx"
-#endif
-
-#ifdef ENABLE_CURL
-#include "plugins/CurlInputPlugin.hxx"
-#endif
+// Streaming/remote plugins removed - not needed for database creation
+// - ALSA input (commented out - for audio capture only)
+// - CURL (for HTTP/streaming)
+// - MMS (for streaming)
+// - Qobuz (commercial streaming service)
+// - SMB (network file sharing - broken in MPD)
+// - CDIO_PARANOIA (CD playback only)
 
 #ifdef ENABLE_FFMPEG
 #include "plugins/FfmpegInputPlugin.hxx"
-#endif
-
-#ifdef ENABLE_SMBCLIENT
-#include "plugins/SmbclientInputPlugin.hxx"
 #endif
 
 #ifdef ENABLE_NFS
 #include "plugins/NfsInputPlugin.hxx"
 #endif
 
-#ifdef ENABLE_MMS
-#include "plugins/MmsInputPlugin.hxx"
-#endif
-
-#ifdef ENABLE_CDIO_PARANOIA
-#include "plugins/CdioParanoiaInputPlugin.hxx"
-#endif
-
 constinit const InputPlugin *const input_plugins[] = {
-#ifdef ENABLE_ALSA
-	&input_plugin_alsa,
-#endif
-#ifdef ENABLE_QOBUZ
-	&qobuz_input_plugin,
-#endif
-#ifdef ENABLE_CURL
-	&input_plugin_curl,
-#endif
 #ifdef ENABLE_FFMPEG
 	&input_plugin_ffmpeg,
 #endif
-#ifdef ENABLE_SMBCLIENT
-	&input_plugin_smbclient,
-#endif
 #ifdef ENABLE_NFS
 	&input_plugin_nfs,
-#endif
-#ifdef ENABLE_MMS
-	&input_plugin_mms,
-#endif
-#ifdef ENABLE_CDIO_PARANOIA
-	&input_plugin_cdio_paranoia,
 #endif
 	nullptr
 };

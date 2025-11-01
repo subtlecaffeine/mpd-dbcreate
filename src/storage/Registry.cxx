@@ -6,26 +6,22 @@
 #include "StorageInterface.hxx"
 #include "plugins/LocalStorage.hxx"
 #include "plugins/UdisksStorage.hxx"
-#include "plugins/SmbclientStorage.hxx"
 #include "plugins/NfsStorage.hxx"
-#include "plugins/CurlStorage.hxx"
 #include "config.h"
 
 #include <string.h>
 
+// Removed storage plugins (not needed for database creation):
+// - SmbclientStorage (SMB/CIFS - broken library)
+// - CurlStorage (WebDAV/HTTP - streaming sources not indexed)
+
 constinit const StoragePlugin *const storage_plugins[] = {
 	&local_storage_plugin,
-#ifdef ENABLE_SMBCLIENT
-	&smbclient_storage_plugin,
-#endif
 #ifdef ENABLE_UDISKS
 	&udisks_storage_plugin,
 #endif
 #ifdef ENABLE_NFS
 	&nfs_storage_plugin,
-#endif
-#ifdef ENABLE_WEBDAV
-	&curl_storage_plugin,
 #endif
 	nullptr
 };

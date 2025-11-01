@@ -11,7 +11,7 @@
 #include "Listener.hxx"
 #include "PlaylistError.hxx"
 #include "player/Control.hxx"
-#include "protocol/RangeArg.hxx"
+#include "RangeArg.hxx"
 #include "song/DetachedSong.hxx"
 #include "SongLoader.hxx"
 

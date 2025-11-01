@@ -4,7 +4,7 @@
 #ifndef MPD_DATABASE_SELECTION_HXX
 #define MPD_DATABASE_SELECTION_HXX
 
-#include "protocol/RangeArg.hxx"
+#include "RangeArg.hxx"
 #include "tag/Type.hxx"
 
 #include <string>

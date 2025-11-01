@@ -6,7 +6,7 @@
 #include "Service.hxx"
 #include "UpdateDomain.hxx"
 #include "lib/fmt/ExceptionFormatter.hxx"
-#include "protocol/Ack.hxx" // for class ProtocolError
+#include "Ack.hxx" // for class ProtocolError
 #include "util/StringCompare.hxx"
 #include "Log.hxx"
 

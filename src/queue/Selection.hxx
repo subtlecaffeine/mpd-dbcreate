@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "protocol/RangeArg.hxx"
+#include "RangeArg.hxx"
 #include "tag/Type.hxx"
 
 struct Queue;

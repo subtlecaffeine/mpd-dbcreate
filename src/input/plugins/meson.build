@@ -6,62 +6,30 @@ if uring_dep.found()
   input_plugins_sources += 'UringInputPlugin.cxx'
 endif
 
-# ALSA input disabled for mpd-dbcreate
-# if alsa_dep.found()
-#   input_plugins_sources += 'AlsaInputPlugin.cxx'
-# endif
+# Streaming/playback-only plugins removed from mpd-dbcreate:
+# - ALSA input (audio capture for playback)
+# - CURL (HTTP/streaming)
+# - MMS (streaming protocol)
+# - Qobuz (commercial streaming service)
+# - SMB (network shares - broken in MPD)
+# - CDIO_PARANOIA (CD playback)
 
-libcdio_paranoia_dep = dependency('libcdio_paranoia', version: '>= 10.2+0.93+1', required: get_option('cdio_paranoia'))
-input_features.set('ENABLE_CDIO_PARANOIA', libcdio_paranoia_dep.found())
-if libcdio_paranoia_dep.found()
-  input_plugins_sources += 'CdioParanoiaInputPlugin.cxx'
-endif
+# Create empty dependencies for removed plugins to maintain compatibility
+libcdio_paranoia_dep = declare_dependency()
+input_features.set('ENABLE_CDIO_PARANOIA', false)
 
-if curl_dep.found()
-  input_plugins_sources += [
-    'CurlInputPlugin.cxx',
-    '../IcyInputStream.cxx',
-    '../../tag/IcyMetaDataParser.cxx',
-  ]
-endif
+libmms_dep = declare_dependency()
+input_features.set('ENABLE_MMS', false)
+
+enable_qobuz = false
+input_features.set('ENABLE_QOBUZ', false)
 
 if ffmpeg_dep.found()
   input_plugins_sources += 'FfmpegInputPlugin.cxx'
 endif
 
-libmms_dep = dependency('libmms', version: '>= 0.4', required: get_option('mms'))
-input_features.set('ENABLE_MMS', libmms_dep.found())
-if libmms_dep.found()
-  input_plugins_sources += 'MmsInputPlugin.cxx'
-endif
-
 if nfs_dep.found()
   input_plugins_sources += 'NfsInputPlugin.cxx'
-endif
-
-if smbclient_dep.found()
-  input_plugins_sources += 'SmbclientInputPlugin.cxx'
-endif
-
-qobuz_feature = get_option('qobuz')
-if qobuz_feature.disabled()
-  enable_qobuz = false
-else
-  enable_qobuz = curl_dep.found() and nlohmann_json_dep.found() and crypto_md5_dep.found()
-  if not enable_qobuz and qobuz_feature.enabled()
-    error('Qobuz requires CURL, nlohmann_json and libgcrypt')
-  endif
-endif
-input_features.set('ENABLE_QOBUZ', enable_qobuz)
-if enable_qobuz
-  input_plugins_sources += [
-    'QobuzClient.cxx',
-    'QobuzErrorParser.cxx',
-    'QobuzLoginRequest.cxx',
-    'QobuzTrackRequest.cxx',
-    'QobuzTagScanner.cxx',
-    'QobuzInputPlugin.cxx',
-  ]
 endif
 
 input_plugins = static_library(
@@ -72,15 +40,8 @@ input_plugins = static_library(
     input_api_dep,
     input_basic_dep,
     log_dep,
-    alsa_dep,
-    curl_dep,
     ffmpeg_dep,
-    libcdio_paranoia_dep,
-    libmms_dep,
     nfs_dep,
-    smbclient_dep,
-    nlohmann_json_dep,
-    crypto_md5_dep,
   ],
 )
 

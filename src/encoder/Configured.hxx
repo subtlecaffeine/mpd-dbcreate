@@ -1,23 +1,23 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // Copyright The Music Player Daemon Project
+// STUB FILE - Encoder support removed for mpd-dbcreate
 
 #ifndef MPD_ENCODER_CONFIGURED_HXX
 #define MPD_ENCODER_CONFIGURED_HXX
 
+#include "EncoderInterface.hxx"
+
 struct ConfigBlock;
-class PreparedEncoder;
+class AudioFormat;
 
 /**
- * Create a #PreparedEncoder instance from the settings in the
- * #ConfigBlock.  Its "encoder" setting is used to choose the encoder
- * plugin.
- *
- * Throws an exception on error.
- *
- * @param shout_legacy enable the "shout" plugin legacy configuration?
- * i.e. fall back to setting "encoding" instead of "encoder"
+ * Stub implementation - encoder support not needed for database creation
  */
-PreparedEncoder *
-CreateConfiguredEncoder(const ConfigBlock &block, bool shout_legacy=false);
+inline EncoderPtr
+encoder_init([[maybe_unused]] const ConfigBlock &block,
+	     [[maybe_unused]] AudioFormat &audio_format)
+{
+	return nullptr;
+}
 
 #endif

@@ -8,9 +8,7 @@
 #include "config/PartitionConfig.hxx"
 #include "lib/fmt/ExceptionFormatter.hxx"
 #include "song/DetachedSong.hxx"
-#include "protocol/IdleFlags.hxx"
-#include "client/Listener.hxx"
-#include "client/Client.hxx"
+#include "IdleFlags.hxx"
 #include "input/cache/Manager.hxx"
 #include "util/Domain.hxx"
 
@@ -22,7 +20,6 @@ Partition::Partition(Instance &_instance,
 	:instance(_instance),
 	 name(_name),
 	 config(_config),
-	 listener(new ClientListener(instance.event_loop, *this)),
 	 idle_monitor(instance.event_loop, BIND_THIS_METHOD(OnIdleMonitor)),
 	 global_events(instance.event_loop, BIND_THIS_METHOD(OnGlobalEvent)),
 	 playlist(config.queue.max_length, *this),
@@ -40,7 +37,6 @@ void
 Partition::BeginShutdown() noexcept
 {
 	pc.Kill();
-	listener.reset();
 }
 
 static void
@@ -225,11 +221,7 @@ Partition::OnMixerChanged() noexcept
 void
 Partition::OnIdleMonitor(unsigned mask) noexcept
 {
-	/* send "idle" notifications to all subscribed
-	   clients */
-	for (auto &client : clients)
-		client.IdleAdd(mask);
-
+	/* In dbcreate mode, we don't have clients to notify */
 	if (mask & (IDLE_PLAYLIST|IDLE_PLAYER|IDLE_MIXER|IDLE_OUTPUT))
 		instance.OnStateModified();
 }

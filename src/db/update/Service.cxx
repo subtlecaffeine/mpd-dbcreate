@@ -9,7 +9,7 @@
 #include "db/plugins/simple/SimpleDatabasePlugin.hxx"
 #include "db/plugins/simple/Directory.hxx"
 #include "storage/CompositeStorage.hxx"
-#include "protocol/Ack.hxx"
+#include "Ack.hxx"
 #include "Idle.hxx"
 #include "Log.hxx"
 #include "thread/Thread.hxx"

@@ -64,6 +64,8 @@ static int DVDReadLBUDF( dvd_reader_t *device, uint32_t lb_number,
 #define NULL ((void *)0)
 #endif
 
+namespace {
+
 struct Partition {
   int valid;
   char VolumeDesc[128];
@@ -74,6 +76,8 @@ struct Partition {
   uint32_t Start;
   uint32_t Length;
 };
+
+} // anonymous namespace
 
 struct AD {
   uint32_t Location;

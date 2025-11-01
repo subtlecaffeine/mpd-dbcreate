@@ -4,10 +4,9 @@
 #include "config.h"
 #include "Instance.hxx"
 #include "Partition.hxx"
-#include "protocol/IdleFlags.hxx"
+#include "IdleFlags.hxx"
 #include "StateFile.hxx"
 #include "Stats.hxx"
-#include "client/List.hxx"
 #include "input/cache/Manager.hxx"
 
 #ifdef ENABLE_CURL

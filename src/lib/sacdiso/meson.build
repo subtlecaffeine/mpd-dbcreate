@@ -28,4 +28,7 @@ sacdiso = static_library(
 
 sacdiso_dep = declare_dependency(
   link_with: sacdiso,
+  dependencies: [
+    crypto_md5_dep,
+  ],
 )

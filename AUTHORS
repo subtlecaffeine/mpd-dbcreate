@@ -1,3 +1,11 @@
+mpd-dbcreate - Jay's MPD Database Creator
+Copyright 2025 Jay Moore
+
+The following person contributed code via the fork I built this from:
+ Maxim Anisiutkin
+
+mpd-dbcreate would not be possible without:
+
 Music Player Daemon - http://www.musicpd.org
 Copyright 2003-2025 The Music Player Daemon Project
 
