@@ -18,6 +18,7 @@ dvdaiso = static_library(
   include_directories: inc,
   dependencies: [
     gcrypt_dep,
+    ixml_dep,
   ],
 )
 

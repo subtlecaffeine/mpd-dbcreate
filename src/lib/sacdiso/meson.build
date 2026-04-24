@@ -23,6 +23,7 @@ sacdiso = static_library(
   dependencies: [
     gcrypt_dep,
     threads_dep,
+    ixml_dep,
   ],
 )
 

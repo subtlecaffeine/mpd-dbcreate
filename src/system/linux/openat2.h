@@ -9,9 +9,11 @@
 #include <sys/syscall.h>
 #include <unistd.h>
 
+#if !defined(__GLIBC_PREREQ) || !__GLIBC_PREREQ(2, 43)
 static inline int
 openat2(int dirfd, const char *pathname,
 	const struct open_how *how, size_t size)
 {
 	return syscall(__NR_openat2, dirfd, pathname, how, size);
 }
+#endif

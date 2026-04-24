@@ -1,4 +1,4 @@
-# mpd-dbcreate | Jay's MPD Database Creator - "Shut Up Baby, I Know It!"
+# mpd-dbcreate | Jay's MPD Database Creator - "Cram It, Lobster!"
 
 It's mpd without the daemon and playback functionality. Creates an mpd database based on "better" rules regarding CUE sheets, multi-channel files, and SACD content.
 
@@ -64,9 +64,9 @@ I've built this on CachyOS. If you have OSX or Windows good luck. It probably wo
 
 A build environment with Meson, Ninja, GCC, and a subset of mpd's requirements. A full list is in BUILD_DEPENDENCIES.md. But this should roughly get you in the ballpark:
 
-- Arch/CachyOS: `sudo pacman -S meson ninja gcc fmt icu sqlite zlib flac libvorbis opus libid3tag ffmpeg expat pcre2 libsndfile mpg123`
-- Debian/Ubuntu: `sudo apt install meson ninja-build g++ libfmt-dev libicu-dev libsqlite3-dev zlib1g-dev libflac-dev libvorbis-dev libopus-dev libid3tag0-dev libavformat-dev libavcodec-dev libavutil-dev libexpat1-dev libpcre2-dev libsndfile1-dev libmpg123-dev`
-- Fedora/RHEL: `sudo dnf install meson ninja-build gcc-c++ fmt-devel libicu-devel sqlite-devel zlib-devel flac-devel libvorbis-devel opus-devel libid3tag-devel ffmpeg-devel expat-devel pcre2-devel libsndfile-devel mpg123-devel`
+- Arch/CachyOS: `sudo pacman -S meson ninja gcc fmt icu sqlite zlib flac libvorbis opus libid3tag ffmpeg expat pcre2 libsndfile mpg123 libupnp`
+- Debian/Ubuntu: `sudo apt install meson ninja-build g++ libfmt-dev libicu-dev libsqlite3-dev zlib1g-dev libflac-dev libvorbis-dev libopus-dev libid3tag0-dev libavformat-dev libavcodec-dev libavutil-dev libexpat1-dev libpcre2-dev libsndfile1-dev libupnp-dev libmpg123-dev`
+- Fedora/RHEL: `sudo dnf install meson ninja-build gcc-c++ fmt-devel libicu-devel sqlite-devel zlib-devel flac-devel libvorbis-devel opus-devel libid3tag-devel ffmpeg-devel expat-devel pcre2-devel libsndfile-devel mpg123-devel libupnp-devel`
  
 *I need to build test systems to verify these. Safety not guarnteed.*
 
@@ -154,6 +154,7 @@ Please make note of the following things:
 24-SEP-2025 - Added --update-path option to update just a specific path in the database and waiting 3 weeks to getting around to testing it.
 24-OCT-2025 - Removed dependencies and code not needed, like output plugins, mixers, libmpdclient, chromaprint. Internal Development Release.
 01-NOV-2025 - Missed encoders and filters. Wrote documentation (manpage). Tweaked things for release builds. Milestone release: Version 1.0 equivalent.
+24-APR-2026 - Fixed new build errors. Added ixml dependency to meson per Issue 1. 
 ```
 
 ## Bugs & Issues

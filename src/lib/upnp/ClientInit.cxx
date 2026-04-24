@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // Copyright The Music Player Daemon Project
 
+#include "config.h" // for USING_PUPNP
 #include "ClientInit.hxx"
 #include "Init.hxx"
 #include "Error.hxx"
@@ -15,10 +16,18 @@ static Mutex upnp_client_init_mutex;
 static unsigned upnp_client_ref;
 static UpnpClient_Handle upnp_client_handle;
 
+#ifdef USING_PUPNP
+/* pupnp's Upnp_FunPtr takes non-const void*Event and is not noexcept */
+static int
+UpnpClientCallback(Upnp_EventType et,
+		   void *evp,
+		   void *cookie)
+#else
 static int
 UpnpClientCallback(Upnp_EventType et,
 		   const void *evp,
 		   void *cookie) noexcept
+#endif
 {
 	if (cookie == nullptr)
 		/* this is the cookie passed to UpnpRegisterClient();

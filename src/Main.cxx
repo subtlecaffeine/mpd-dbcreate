@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // Copyright The Music Player Daemon Project
-// mpd-dbcreate "Shut Up Baby, I Know It!"
+// mpd-dbcreate "Cram It, Lobster!"
 // Jay Moore - dewdude@pickmy.org
 
 #include "config.h"
@@ -89,7 +89,7 @@ extern "C" ChannelMode GetChannelMode() noexcept {
 }
 
 static void PrintUsage() {
-	std::cout << "mpd-dbcreate | Jay's MPD DB Creator - Shut Up Baby, I Know It!\n"
+	std::cout << "mpd-dbcreate | Jay's MPD DB Creator - Cram It, Lobster!\n"
 		  << "Usage: mpd-dbcreate --music-dir /path/to/scan --database /path/to/mpd.db [options]\n\n"
 		  << "Options:\n"
 		  << "  --music-dir <path>   Music directory\n"

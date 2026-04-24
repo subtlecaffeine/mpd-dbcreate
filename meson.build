@@ -1,7 +1,7 @@
 project(
   'mpd-dbcreate',
   ['c', 'cpp'],
-  version: 'Shut Up Baby, I Know It!',
+  version: 'Cram It, Lobster!',
   meson_version: '>= 1.2',
   default_options: [
     'c_std=c11',
@@ -481,6 +481,19 @@ subdir('src/decoder')
 encoder_glue_dep = declare_dependency()  # Empty dependency for compatibility
 subdir('src/song')
 subdir('src/playlist')
+
+if enable_sacdiso or enable_dvdaiso
+  # ixml is required by the SACD/DVD-Audio metabase code (<upnp/ixml.h>).
+  # It ships as part of libupnp (pupnp) or libnpupnp; prefer pupnp for
+  # portability across distros, fall back to npupnp.
+  ixml_dep = dependency('libupnp', required: true)
+  if not ixml_dep.found()
+    ixml_dep = dependency('libnpupnp', required: true)
+  endif
+  if not ixml_dep.found()
+    error('SACD/DVD-Audio support requires libupnp or libnpupnp (for ixml)')
+  endif
+endif
 
 if enable_sacdiso
   subdir('src/lib/sacdiso')
